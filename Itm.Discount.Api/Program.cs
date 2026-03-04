@@ -1,5 +1,4 @@
 using Itm.Discount.Api.Dtos;
-using Microsoft.AspNetCore.Server.HttpSys; // Importamos el DTO para usarlo en el controlador
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,12 +16,14 @@ if (app.Environment.IsDevelopment())
 var discountDB = new List<DiscountDto>
 {
     new DiscountDto("ITM50", 0.5m),
+    new DiscountDto("ITM10", 0.1m),
+    new DiscountDto("ITM25", 0.25m)
 };
 
-app.MapGet("/api/discounts/{code}", (string codigo) =>
+app.MapGet("/api/discounts/{codigo}", (string codigo) =>
 {
     var discount = discountDB.FirstOrDefault(d => d.Codigo == codigo);
-    return discount is not null ? Results.Ok(discount.Porcentaje) : Results.NotFound();
+    return discount is not null ? Results.Ok(discount) : Results.NotFound();
 });
 
 app.Run();
