@@ -3,9 +3,6 @@ using System.Net.Http.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 // Discount
 builder.Services.AddHttpClient("DiscountClient", c =>
 {
@@ -21,12 +18,6 @@ builder.Services.AddHttpClient("EventClient", c =>
 .AddStandardResilienceHandler();
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 app.MapPost("/api/bookings", async (BookingRequest request, IHttpClientFactory factory) =>
 {

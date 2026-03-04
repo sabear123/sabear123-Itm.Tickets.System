@@ -3,16 +3,7 @@ using Microsoft.AspNetCore.Server.HttpSys; // Importamos el DTO para usarlo en e
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build(); 
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger(); 
-    app.UseSwaggerUI(); 
-}
 
 var eventDB = new List<EventDto>
 {
