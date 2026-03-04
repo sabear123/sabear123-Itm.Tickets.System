@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Itm.Booking.Api/Itm.Booking.Api.csproj" />
+  <Project Path="Itm.Discount.Api/Itm.Discount.Api.csproj" />
+  <Project Path="Itm.Event.Api/Itm.Event.Api.csproj" />
+</Solution>
