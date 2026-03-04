@@ -103,6 +103,11 @@ app.Run();
 // Método auxiliar que maneja 404 sin romper WhenAll
 static async Task<DiscountDto?> SafeGetDiscountAsync(HttpClient client, string code)
 {
+    if (string.IsNullOrWhiteSpace(code))
+    {
+        Console.WriteLine("[INFO] No se proporcionó código de descuento.");
+        return null;
+    }
     try
     {
         var response = await client.GetAsync($"/api/discounts/{code}");
@@ -142,7 +147,3 @@ static async Task<EventDto?> SafeGetEventAsync(HttpClient client, int eventId)
         return null;
     }
 }
-
-public record BookingRequest(int EventId, int Tickets, string DiscountCode);
-public record EventDto(int Id, string Nombre, int PrecioBase, int SillasDisponibles);
-public record DiscountDto(string Codigo, decimal Porcentaje);

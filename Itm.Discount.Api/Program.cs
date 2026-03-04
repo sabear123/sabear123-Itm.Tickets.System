@@ -15,9 +15,7 @@ if (app.Environment.IsDevelopment())
 
 var discountDB = new List<DiscountDto>
 {
-    new DiscountDto("ITM50", 0.5m),
-    new DiscountDto("ITM10", 0.1m),
-    new DiscountDto("ITM25", 0.25m)
+    new DiscountDto("ITM50", 0.5m)
 };
 
 app.MapGet("/api/discounts/{codigo}", (string codigo) =>
