@@ -31,8 +31,14 @@ if (app.Environment.IsDevelopment())
 app.MapPost("/api/bookings", async (BookingRequest request, IHttpClientFactory factory) =>
 {
 
-    if (request.EventId <= 0 || request.Tickets <= 0)
-        return Results.BadRequest("El EventId y la cantidad de tickets deben ser mayores que cero.");
+    if (request is null)
+        return Results.BadRequest("La solicitud no puede estar vacía.");
+
+    if (request.EventId <= 0)
+        return Results.BadRequest("El EventId debe ser un número entero mayor que cero.");
+
+    if (request.Tickets <= 0)
+        return Results.BadRequest("La cantidad de tickets debe ser mayor que cero.");
 
     var eventClient = factory.CreateClient("EventClient");
     var discountClient = factory.CreateClient("DiscountClient");
