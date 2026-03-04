@@ -1,39 +1,30 @@
+using Itm.Discount.Api.Dtos;
+using Microsoft.AspNetCore.Server.HttpSys; // Importamos el DTO para usarlo en el controlador
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
-var summaries = new[]
+var discountDB = new List<DiscountDto>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    new DiscountDto("ITM50", 0.5m),
 };
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/api/discounts/{code}", (string codigo) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    var discount = discountDB.FirstOrDefault(d => d.Codigo == codigo);
+    return discount is not null ? Results.Ok(discount.Porcentaje) : Results.NotFound();
+});
 
 app.Run();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+record DiscountDto(string Codigo, decimal Porcentaje);
